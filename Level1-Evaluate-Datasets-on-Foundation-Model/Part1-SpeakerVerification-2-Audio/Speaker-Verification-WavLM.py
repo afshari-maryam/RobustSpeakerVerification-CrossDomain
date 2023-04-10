@@ -77,9 +77,13 @@ def similarity_fn(path1, path2):
 
     if similarity >= THRESHOLD:
         #output = OUTPUT_OK.format(similarity * 100)
+        print("They are similar.")
+        print("Similarity is :")
         output = (similarity * 100)
     else:
         #output = OUTPUT_FAIL.format(similarity * 100)
+        print("They are not similar.")
+        print("Similarity is :")
         output = (similarity * 100)
 
     return output
@@ -95,4 +99,5 @@ print("Hey maryam ^..^ I'm good! Thank God:)")
 my_path1 ="/mnt/disk1/data/voxceleb_1.1/wav/id10270/x6uYqmx31kE/00001.wav"
 my_path2 ="/mnt/disk1/data/voxceleb_1.1/wav/id10270/8jEAjG6SegY/00008.wav"
 
+print(similarity_fn(my_path1,my_path2))
 similarity_fn(my_path1,my_path2)
