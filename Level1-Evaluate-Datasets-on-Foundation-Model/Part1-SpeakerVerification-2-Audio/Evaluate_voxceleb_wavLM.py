@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Import the transformers library
 import transformers
 import datasets
