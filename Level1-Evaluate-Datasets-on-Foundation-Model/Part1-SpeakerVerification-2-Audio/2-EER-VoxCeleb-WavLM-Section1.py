@@ -14,7 +14,8 @@ import numpy as np
 import pandas as pd  
   
      
-from sklearn.metrics import roc_curve, eer
+#from sklearn.metrics import roc_curve, eer
+import sklearn.metrics
 
 # Print the version of the transformers library
 print(transformers.__version__)
@@ -54,6 +55,33 @@ model_name = "microsoft/wavlm-base-plus-sv"
 feature_extractor = AutoFeatureExtractor.from_pretrained(model_name)
 model = AutoModelForAudioXVector.from_pretrained(model_name).to(device)
 cosine_sim = torch.nn.CosineSimilarity(dim=-1)
+
+
+"""
+Python compute equal error rate (eer)
+ONLY tested on binary classification
+
+:param label: ground-truth label, should be a 1-d list or np.array, each element represents the ground-truth label of one sample
+:param pred: model prediction, should be a 1-d list or np.array, each element represents the model prediction of one sample
+:param positive_label: the class that is viewed as positive class when computing EER
+:return: equal error rate (EER)
+"""
+def compute_eer(label, pred, positive_label=1):
+    # all fpr, tpr, fnr, fnr, threshold are lists (in the format of np.array)
+    fpr, tpr, threshold = sklearn.metrics.roc_curve(label, pred, positive_label)
+    fnr = 1 - tpr
+
+    # the threshold of fnr == fpr
+    eer_threshold = threshold[np.nanargmin(np.absolute((fnr - fpr)))]
+
+    # theoretically eer from fpr and eer from fnr should be identical but they can be slightly differ in reality
+    eer_1 = fpr[np.nanargmin(np.absolute((fnr - fpr)))]
+    eer_2 = fnr[np.nanargmin(np.absolute((fnr - fpr)))]
+
+    # return the mean of eer from fpr and from fnr
+    eer = (eer_1 + eer_2) / 2
+    return eer
+
 
 
 def similarity_fn(path1, path2):
@@ -166,9 +194,15 @@ write_score_in_csv_file(my_scores)
 labels = np.array(labels)
 
 # Calculate the false positive rate and true positive rate
-fpr, tpr, _ = roc_curve(labels, my_scores)
+#fpr, tpr, _ = roc_curve(labels, my_scores)
 
 # Calculate the EER
-eer = eer(fpr, tpr)
+#eer = eer(fpr, tpr)
+
+#label = [1, 1, 0, 0, 1]
+#prediction = [0.3, 0.1, 0.4, 0.8, 0.9]
+#------------------call compute eer functions and use of it ------------------------------------------------
+eer = compute_eer(labels, my_scores)
+print('The equal error rate is {:.3f}'.format(eer))
 
 print(f'Equal Error Rate (EER): {eer:.4f}')
