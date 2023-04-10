@@ -132,7 +132,7 @@ def compute_scores(spkr_list1,spkr_list2):
     similarity_score = similarity_fn(file_path1,file_path2)
     #print(f"number = {count}")
     scores.append(similarity_fn(file_path1,file_path2))
-    if(count %100 == 0):
+    if(count %2000 == 0):
        print(f"number = {count}")
   print("comput scores function ended ....................................")
   return scores
