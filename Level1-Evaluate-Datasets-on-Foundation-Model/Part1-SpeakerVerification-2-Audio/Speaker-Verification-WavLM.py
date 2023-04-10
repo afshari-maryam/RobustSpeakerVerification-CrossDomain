@@ -99,5 +99,5 @@ print("Hey maryam ^..^ I'm good! Thank God:)")
 my_path1 ="/mnt/disk1/data/voxceleb_1.1/wav/id10270/x6uYqmx31kE/00001.wav"
 my_path2 ="/mnt/disk1/data/voxceleb_1.1/wav/id10270/8jEAjG6SegY/00008.wav"
 
-print(similarity_fn(my_path1,my_path2))
-similarity_fn(my_path1,my_path2)
+similar_value = similarity_fn(my_path1,my_path2)
+print(similar_value)
