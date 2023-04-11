@@ -33,7 +33,7 @@ def compute_eer2(label, pred, positive_label=1):
     return eer
 
 # Read scores from CSV file using pandas
-df = pd.read_csv('my_score_cfg..csv')
+df = pd.read_csv('my_score_cfg.csv')
 
 # Extract true labels and predicted probabilities from DataFrame
 label = df['Label'].to_numpy()
